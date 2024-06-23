@@ -15,7 +15,7 @@ const Signup = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5001/api/auth/signup', { username, password, email });
+      await axios.post('https://brewery-api-qjzd.onrender.com/api/auth/signup', { username, password, email });
       setSuccess('Signup successful! Redirecting to login...');
       setError('');
       setTimeout(() => {

@@ -28,7 +28,7 @@ const BreweryDetails = () => {
       });
 
     // Fetch existing reviews
-    axios.get(`http://localhost:5001/api/reviews/${breweryId}`)
+    axios.get(`https://brewery-api-qjzd.onrender.com/api/reviews/${breweryId}`)
       .then(response => {
         const reviewsData = response.data;
         if (Array.isArray(reviewsData)) {
@@ -52,7 +52,7 @@ const BreweryDetails = () => {
   const handleReviewSubmit = (e) => {
     e.preventDefault();
     const reviewData = { userId, breweryId, review, rating, username };
-    axios.post(`http://localhost:5001/api/reviews/${userId}/${breweryId}`, reviewData)
+    axios.post(`https://brewery-api-qjzd.onrender.com/api/reviews/${userId}/${breweryId}`, reviewData)
       .then(response => {
         setExistingReviews(prevReviews => [...prevReviews, response.data]);
         setReview('');
@@ -97,6 +97,7 @@ const BreweryDetails = () => {
               )}
               
               <form onSubmit={handleReviewSubmit} className="brewery-review-form">
+              <h3 className='brewery-review-section'>Submit YOUR Rating and Review-</h3>
                 <div className="form-group">
                   <label htmlFor="review">Your Review</label>
                   <textarea
@@ -107,6 +108,7 @@ const BreweryDetails = () => {
                   />
                 </div>
                 <div className="form-group">
+                 
                   <label htmlFor="rating">Your Rating</label>
                   <input
                     type="number"

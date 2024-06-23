@@ -70,3 +70,13 @@
 .login-btn-signup:hover {
   text-decoration: underline;
 }
+.login-success {
+  color: green;  /* Success message color */
+  font-size: 0.875rem;
+  margin-bottom: 10px;
+}
+.login-error {
+  color: red;
+  font-size: 0.875rem;
+  margin-bottom: 10px;
+}

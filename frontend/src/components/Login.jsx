@@ -17,16 +17,20 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(''); // Add success message state
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError('');
+    setSuccess('');
     try {
-      const response = await axios.get(`http://localhost:5001/api/auth/email/${email}`);
+      const response = await axios.get(`https://brewery-api-qjzd.onrender.com/api/auth/email/${email}`);
       if (password === response.data.password) {
-        setItemWithExpiry('userId', response.data.id, 600000); 
-        localStorage.setItem('username',response.data.username);
-        navigate('/home');
+        setItemWithExpiry('userId', response.data.id, 7200000); // Set expiration to 2 hours
+        localStorage.setItem('username', response.data.username);
+        setSuccess('Login Successfully');
+        setTimeout(() => navigate('/home'), 1000); // Redirect to home after 1 seconds
       } else {
         setError('Invalid email or password');
       }
@@ -40,6 +44,7 @@ const Login = () => {
       <form onSubmit={handleLogin} className="login-form">
         <h2 className="login-title">Login</h2>
         {error && <p className="login-error">{error}</p>}
+        {success && <p className="login-success">{success}</p>}
         <div className="login-form-group">
           <label htmlFor="email" className="login-label">Email:</label>
           <input

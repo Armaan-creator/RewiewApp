@@ -4,24 +4,30 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import './CardForm.css'; // Import custom CSS for styling
 import { Link } from 'react-router-dom';
-// import { Link } from 'react-router-dom';
 
 // Define validation schema using Yup
-const validationSchema = Yup.object().shape({
+const validationSchemaCity = Yup.object().shape({
   city: Yup.string()
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
     .required('Required'),
+});
+
+const validationSchemaName = Yup.object().shape({
   name: Yup.string()
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
     .required('Required'),
+});
+
+const validationSchemaType = Yup.object().shape({
   type: Yup.string()
     .required('Required'),
 });
 
 const CardForm = () => {
   const [data, setData] = useState([]);
+  const username = localStorage.getItem('username');
 
   // Initial form values
   const initialValues = {
@@ -68,107 +74,148 @@ const CardForm = () => {
   };
 
   return (
-    <div className="container">
-      <div className="card">
-        <div className="card-body">
-          <h5 className="card-title">Welcome to the Brewery Review App!</h5>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-          >
-            {({ values }) => (
-              <Form>
-                <div className="form-group">
-                  <label htmlFor="city">Search by city</label>
-                  <div className="input-group">
-                    <Field
-                      type="text"
+    <>
+    <div className='body'>
+      <h3 className='heading'>Hello {username}, Welcome to Brewery Review App!</h3>
+      <div className="container">
+        <div className="card">
+          <div className="card-body">
+            <h5 className="card-title">Welcome to the Brewery Review App!</h5>
+
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchemaCity}
+              validateOnChange={false}
+              validateOnBlur={false}
+              onSubmit={handleSubmitByCity}
+            >
+              {({ handleSubmit, validateForm }) => (
+                <Form onSubmit={(e) => {
+                  e.preventDefault();
+                  validateForm().then(() => handleSubmit());
+                }}>
+                  <div className="form-group">
+                    <label htmlFor="city">Search by city</label>
+                    <div className="input-group">
+                      <Field
+                        type="text"
+                        name="city"
+                        className="form-control"
+                      />
+                      <button
+                        type="submit"
+                        className="btn btn-outline-primary"
+                      >
+                        Search
+                      </button>
+                    </div>
+                    <ErrorMessage
                       name="city"
-                      className="form-control"
+                      component="div"
+                      className="error-message"
                     />
-                    <button
-                      type="button"
-                      className="btn btn-outline-primary"
-                      onClick={() => handleSubmitByCity(values)}
-                    >
-                      Search
-                    </button>
                   </div>
-                  <ErrorMessage
-                    name="city"
-                    component="div"
-                    className="error-message"
-                  />
-                </div>
+                </Form>
+              )}
+            </Formik>
 
-                <div className="form-group">
-                  <label htmlFor="name">Search by name</label>
-                  <div className="input-group">
-                    <Field
-                      type="text"
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchemaName}
+              validateOnChange={false}
+              validateOnBlur={false}
+              onSubmit={handleSubmitByName}
+            >
+              {({ handleSubmit, validateForm }) => (
+                <Form onSubmit={(e) => {
+                  e.preventDefault();
+                  validateForm().then(() => handleSubmit());
+                }}>
+                  <div className="form-group">
+                    <label htmlFor="name">Search by name</label>
+                    <div className="input-group">
+                      <Field
+                        type="text"
+                        name="name"
+                        className="form-control"
+                      />
+                      <button
+                        type="submit"
+                        className="btn btn-outline-primary"
+                      >
+                        Search
+                      </button>
+                    </div>
+                    <ErrorMessage
                       name="name"
-                      className="form-control"
+                      component="div"
+                      className="error-message"
                     />
-                    <button
-                      type="button"
-                      className="btn btn-outline-primary"
-                      onClick={() => handleSubmitByName(values)}
-                    >
-                      Search
-                    </button>
                   </div>
-                  <ErrorMessage
-                    name="name"
-                    component="div"
-                    className="error-message"
-                  />
-                </div>
+                </Form>
+              )}
+            </Formik>
 
-                <div className="form-group">
-                  <label htmlFor="type">Search by type</label>
-                  <div className="input-group">
-                    <Field
-                      type="text"
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchemaType}
+              validateOnChange={false}
+              validateOnBlur={false}
+              onSubmit={handleSubmitByType}
+            >
+              {({ handleSubmit, validateForm }) => (
+                <Form onSubmit={(e) => {
+                  e.preventDefault();
+                  validateForm().then(() => handleSubmit());
+                }}>
+                  <div className="form-group">
+                    <label htmlFor="type">Search by type</label>
+                    <div className="input-group">
+                      <Field
+                        type="text"
+                        name="type"
+                        className="form-control"
+                      />
+                      <button
+                        type="submit"
+                        className="btn btn-outline-primary"
+                      >
+                        Search
+                      </button>
+                    </div>
+                    <ErrorMessage
                       name="type"
-                      className="form-control"
+                      component="div"
+                      className="error-message"
                     />
-                    <button
-                      type="button"
-                      className="btn btn-outline-primary"
-                      onClick={() => handleSubmitByType(values)}
-                    >
-                      Search
-                    </button>
                   </div>
-                  <ErrorMessage
-                    name="type"
-                    component="div"
-                    className="error-message"
-                  />
-                </div>
-              </Form>
-            )}
-          </Formik>
+                </Form>
+              )}
+            </Formik>
+          </div>
         </div>
-      </div>
 
-      <div className="card wide-card">
-        <div className="card-body">
-          <h1>Here is your search data</h1>
-          {data.length > 0 ? (
-            data.map((brewery) => (
-              // <Link key={brewery.id} to={`/brewery/${brewery.id}`}>
-              <div className="brewery-info">
-               <p> <Link key={brewery.id} to={`/brewery/${brewery.id}`}>{brewery.name} - {brewery.brewery_type} - </Link>{brewery.city}, {brewery.state}</p>
-              </div>
-            
-            ))
-          ) : (
-            <p>No data available</p>
-          )}
+        <div className="card wide-card">
+          <div className="card-body">
+            <h1>Here is your search data</h1>
+            {data.length > 0 ? (
+              data.map((brewery) => (
+                <div className="brewery-info" key={brewery.id}>
+                  <p>
+                    <Link to={`/brewery/${brewery.id}`}>
+                      {brewery.name} - {brewery.brewery_type} - {brewery.city}, {brewery.state}
+                    </Link>
+                  </p>
+                </div>
+              ))
+            ) : (
+              <p>No data available</p>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 
